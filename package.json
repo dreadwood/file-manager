@@ -1,0 +1,9 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "This repository implements the file manager task from https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/file-manager/assignment.md",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
