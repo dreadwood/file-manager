@@ -1,9 +1,10 @@
 import process from 'node:process';
 import { USER_ARGV_INDEX, PREFIX_CLI_COMMAND, ExitCode } from './constants.js';
+import { Colors, colorStr } from './color.js';
 
-console.log('\x1b[34m%s\x1b[0m', 'HELLO!\n');
-console.log('\x1b[45m%s\x1b[0m', 'I am File Manager');
-console.log('\x1b[91m\x1b[2m%s\x1b[0m', 'actually, not yet\n');
+console.log(colorStr('HELLO!\n', Colors.fgBlue));
+console.log(colorStr('I am File Manager!', Colors.bgMagenta));
+console.log(colorStr('actually, not yet\n', Colors.dim + Colors.fgRed));
 
 /**
  * @type {string[]}
