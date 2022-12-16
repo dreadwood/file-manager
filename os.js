@@ -5,26 +5,32 @@ import { Colors, colorStr } from './color.js';
  * @param {string[]} inputArguments
  */
 export const osHandler = (inputArguments) => {
+  let output = null;
+
   switch (inputArguments[0]) {
     case '--EOL':
-      return JSON.stringify(os.EOL);
+      output = JSON.stringify(os.EOL);
+      break;
 
     case '--cpus':
       const info = os.cpus().map((cpu) =>
         `${colorStr('Model:', Colors.fgBlue)} ${cpu.model}, ${colorStr('clock rate:', Colors.fgBlue)} ${(cpu.speed / 1000).toFixed(2)}GHz`);
 
-      return`${info.length} CPU cores${os.EOL}${info.join(os.EOL)}`;
+      output =`${info.length} CPU cores${os.EOL}${info.join(os.EOL)}`;
+      break;
 
     case '--homedir':
-      return os.userInfo().homedir;
+      output =  os.userInfo().homedir;
+      break;
 
     case '--username':
-      return os.userInfo().username;
+      output =  os.userInfo().username;
+      break;
 
     case '--architecture':
-      return os.arch();
-      
-    default:
-      return null;
+      output =  os.arch();
+      break;
   }
+
+  console.log(output || colorStr(`Invalid input: os ${inputArguments}`, Colors.fgRed));
 };
