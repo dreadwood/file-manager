@@ -5,6 +5,7 @@ import { USER_ARGV_INDEX, PREFIX_CLI_COMMAND, ExitCode } from './constants.js';
 import { Colors, colorStr } from './color.js';
 import { osHandler } from './os.js';
 import { nwdHandler } from './nwd.js';
+import { hashHandler } from './hash.js';
 
 /**
  * @type {string[]}
@@ -37,12 +38,16 @@ process.stdin.on('data', async (data) => {
       case 'os':
         osHandler(inputArguments);
         break;
+      case 'hash':
+        await hashHandler(inputArguments);
+        break;
       default:
         console.log(colorStr(`Invalid input: ${input}`, Colors.fgRed));
         break;
     }
 
   } catch (error) {
+    console.log(error); // TODO: remove
     console.log(colorStr(`Operation failed: ${input}`, Colors.fgRed));
   }
 
