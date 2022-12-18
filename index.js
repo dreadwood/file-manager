@@ -6,6 +6,7 @@ import { Colors, colorStr } from './color.js';
 import { osHandler } from './os.js';
 import { nwdHandler } from './nwd.js';
 import { hashHandler } from './hash.js';
+import { zipHandler } from './zip.js';
 
 /**
  * @type {string[]}
@@ -30,17 +31,26 @@ process.stdin.on('data', async (data) => {
     switch (inputCommand) {
       case '.exit':
         process.exit(ExitCode.success);
+
       case 'up':
       case 'cd':
       case 'ls':
         await nwdHandler(inputCommand, inputArguments);
         break;
+
       case 'os':
         osHandler(inputArguments);
         break;
+
       case 'hash':
         await hashHandler(inputArguments);
         break;
+
+      case 'compress':
+      case 'decompress':
+        await zipHandler(inputCommand, inputArguments);
+        break;
+
       default:
         console.log(colorStr(`Invalid input: ${input}`, Colors.fgRed));
         break;
@@ -53,3 +63,10 @@ process.stdin.on('data', async (data) => {
 
   process.stdout.write(`You are currently in ${colorStr(process.cwd(), Colors.fgBlue)} > `);
 });
+
+
+process.on('exit', () => {
+  console.log(`Thank you for using File Manager, ${username ? `${colorStr(username, Colors.fgBlue)}, ` : ''}goodbye!`);
+});
+
+process.on('SIGINT', process.exit);

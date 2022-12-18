@@ -24,9 +24,10 @@ export const Colors = {
   bgWhite: '\x1b[47m'
 }
 
+/**
+ * @param {string} str
+ * @param {string} color
+ * @returns {string} colored string
+ */
 export const colorStr = (str, color = Colors.reset) =>
   `${color}${str}${Colors.reset}`;
-
-// console.log(colorStr('HELLO!\n', Colors.fgBlue));
-// console.log(colorStr('I am File Manager!', Colors.bgMagenta));
-// console.log(colorStr('actually, not yet\n', Colors.dim + Colors.fgRed));
