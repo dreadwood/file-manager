@@ -1,13 +1,14 @@
 import process from 'node:process';
 import os from "node:os";
 import readline from 'node:readline/promises';
-import { USER_ARGV_INDEX, PREFIX_CLI_COMMAND, ExitCode } from './constants.js';
+import { USER_ARGV_INDEX, PREFIX_CLI_COMMAND, ExitCode, Commands } from './constants.js';
 import { Colors, colorStr } from './color.js';
 import { osHandler } from './os.js';
 import { nwdHandler } from './nwd.js';
 import { hashHandler } from './hash.js';
 import { zipHandler } from './zip.js';
 import { filesHandler } from './files.js';
+import { parser } from './parser.js';
 
 /**
  * @type {string[]}
@@ -20,65 +21,64 @@ const username = usernameCommand && usernameCommand.substring(PREFIX_CLI_COMMAND
 process.chdir(os.homedir());
 
 console.log(`Welcome to the File Manager${username ? `, ${colorStr(username, Colors.fgBlue)}` : ''}!`);
-console.log('Press command-D, control-D, ^-D, Ctrl-D to exit');
+console.log('Press control-D, ^-D, Ctrl-D to exit');
 
 process.on('exit', () => {
-  console.log(`Thank you for using File Manager, ${username ? `${colorStr(username, Colors.fgBlue)}, ` : ''}goodbye!`);
+  console.log(`${os.EOL}Thank you for using File Manager, ${username ? `${colorStr(username, Colors.fgBlue)}, ` : ''}goodbye!`);
 });
 
 process.on('SIGINT', process.exit);
 
 const rl = readline.createInterface({ 
-  input: process.stdin, 
-  output: process.stdout 
+  input: process.stdin,
+  output: process.stdout
 });
 
 const readlineInput = async () => {
   const input = await rl.question(`You are currently in ${colorStr(process.cwd(), Colors.fgBlue)} > `);
-
-  const [inputCommand, ...inputArguments] = input.trim().split(' ');
+  
+  const [inputCommand, ...inputArguments] = parser(input);
 
   try {
     
     switch (inputCommand) {
-      case '.exit':
+      case Commands.exit:
         process.exit(ExitCode.success);
 
-      case 'up':
-      case 'cd':
-      case 'ls':
+      case Commands.up:
+      case Commands.cd:
+      case Commands.ls:
         await nwdHandler(inputCommand, inputArguments);
         break;
 
-      case 'cat':
-      case 'add':
-      case 'rn':
-      case 'cp':
-      case 'mv':
-      case 'rm':
+      case Commands.cat:
+      case Commands.add:
+      case Commands.rn:
+      case Commands.cp:
+      case Commands.mv:
+      case Commands.rm:
         await filesHandler(inputCommand, inputArguments);
         break;
 
-      case 'os':
+      case Commands.os:
         osHandler(inputArguments);
         break;
 
-      case 'hash':
+      case Commands.hash:
         await hashHandler(inputArguments);
         break;
 
-      case 'compress':
-      case 'decompress':
+      case Commands.compress:
+      case Commands.decompress:
         await zipHandler(inputCommand, inputArguments);
         break;
 
       default:
-        console.log(colorStr(`Invalid input: ${input}`, Colors.fgRed));
+        console.log(colorStr('Invalid input', Colors.fgRed));
         break;
     }
 
   } catch (error) {
-    console.log(error); // TODO: remove
     console.log(colorStr('Operation failed', Colors.fgRed));
   }
 

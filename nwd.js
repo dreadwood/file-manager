@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { Commands } from './constants.js';
 
 /**
  * @param {string} inputCommand
@@ -8,19 +9,18 @@ import process from 'node:process';
  */
 export const nwdHandler = async (inputCommand, inputArguments) => {
   switch (inputCommand) {
-    case 'up': {
+    case Commands.up: {
       process.chdir(path.dirname(process.cwd()));
       break;
     }
 
-    case 'cd': {
-      // TODO: 2022-12-16 / win check
+    case Commands.cd: {
       const newWorkdir = path.join(process.cwd(), inputArguments.join(' ')); 
       process.chdir(newWorkdir);
       break;
     }
 
-    case 'ls':
+    case Commands.ls:
       const dataDir = await fs.readdir(process.cwd(), { withFileTypes: true });
 
       dataDir.sort((a, b) => {

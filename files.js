@@ -4,6 +4,7 @@ import fsPromises from 'node:fs/promises';
 import path from 'node:path';
 import stream from 'node:stream/promises';
 import { Colors, colorStr } from './color.js';
+import { Commands } from './constants.js';
 
 /**
  * @param {string} inputFile
@@ -32,7 +33,7 @@ const removeFile = async (inputPath) => {
  */
 export const filesHandler = async (inputCommand, inputArguments) => {
   switch (inputCommand) {
-    case 'cat': {
+    case Commands.cat: {
       const filePath = path.join(process.cwd(), inputArguments[0]); 
       const readStream = await fs.createReadStream(filePath);
       await readStream.pipe(process.stdout)
@@ -40,14 +41,14 @@ export const filesHandler = async (inputCommand, inputArguments) => {
       break;
     }
 
-    case 'add': {
+    case Commands.add: {
       const filePath = path.join(process.cwd(), inputArguments[0]); 
       await fsPromises.appendFile(filePath, '', { flag: 'ax' });
       console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} is created`);
       break;
     }
   
-    case 'rn': {
+    case Commands.rn: {
       const inputPath = path.join(process.cwd(), inputArguments[0]);
       const outputPath = path.join(process.cwd(), inputArguments[1]);
       await fsPromises.rename(inputPath, outputPath);
@@ -55,20 +56,20 @@ export const filesHandler = async (inputCommand, inputArguments) => {
       break;
     }
   
-    case 'cp': {
+    case Commands.cp: {
       await copyFile(inputArguments[0], inputArguments[1]);
       console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} was copied as ${colorStr(inputArguments[1], Colors.fgBlue)}`);
       break;
     }
   
-    case 'mv': {
+    case Commands.mv: {
       await copyFile(inputArguments[0], inputArguments[1]);
       await removeFile(inputArguments[0]);
       console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} was moved as ${colorStr(inputArguments[1], Colors.fgBlue)}`);
       break;
     }
 
-    case 'rm': {
+    case Commands.rm: {
       await removeFile(inputArguments[0]);
       console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} is deleted`);
       break;

@@ -3,6 +3,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import stream from 'node:stream/promises';
 import { Colors, colorStr } from './color.js';
+import { Commands } from './constants.js';
 
 /**
  * @param {string} inputCommand
@@ -13,7 +14,7 @@ export const zipHandler = async (inputCommand, inputArguments) => {
   const outputPath = path.join(process.cwd(), inputArguments[1]);
 
   switch (inputCommand) {
-    case 'compress':
+    case Commands.compress:
       await stream.pipeline(
         fs.createReadStream(inputPath),
         zlib.createBrotliCompress(),
@@ -21,7 +22,7 @@ export const zipHandler = async (inputCommand, inputArguments) => {
       )
       break;
 
-    case 'decompress':
+    case Commands.decompress:
       await stream.pipeline(
         fs.createReadStream(inputPath),
         zlib.createBrotliDecompress(),
