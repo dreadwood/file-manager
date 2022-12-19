@@ -5,13 +5,13 @@ import { createHash } from 'node:crypto';
 import { colorStr, Colors } from './color.js';
 
 /**
- * @param {string[]} inputArguments
+ * @param {string[]} firstArguments
  */
-export const hashHandler = async (inputArguments) => {
-  const filePath = path.join(process.cwd(), inputArguments[0]); 
+export const hashHandler = async (firstArguments) => {
+  const filePath = path.join(process.cwd(), firstArguments); 
   const contents = await fs.readFile(filePath, { encoding: 'utf8' });
 
   const hash = createHash('sha256').update(contents).digest('hex');
 
-  console.log(`Hash for ${colorStr(inputArguments[0], Colors.fgBlue)}:${os.EOL}${hash}`);
+  console.log(`Hash for ${colorStr(firstArguments, Colors.fgBlue)}:${os.EOL}${hash}`);
 }

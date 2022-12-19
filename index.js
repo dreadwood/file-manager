@@ -37,7 +37,7 @@ const rl = readline.createInterface({
 const readlineInput = async () => {
   const input = await rl.question(`You are currently in ${colorStr(process.cwd(), Colors.fgBlue)} > `);
   
-  const [inputCommand, ...inputArguments] = parser(input);
+  const [inputCommand, firstArguments, secondArguments] = parser(input);
 
   try {
     
@@ -48,7 +48,7 @@ const readlineInput = async () => {
       case Commands.up:
       case Commands.cd:
       case Commands.ls:
-        await nwdHandler(inputCommand, inputArguments);
+        await nwdHandler(inputCommand, firstArguments);
         break;
 
       case Commands.cat:
@@ -57,20 +57,20 @@ const readlineInput = async () => {
       case Commands.cp:
       case Commands.mv:
       case Commands.rm:
-        await filesHandler(inputCommand, inputArguments);
+        await filesHandler(inputCommand, firstArguments, secondArguments);
         break;
 
       case Commands.os:
-        osHandler(inputArguments);
+        osHandler(firstArguments);
         break;
 
       case Commands.hash:
-        await hashHandler(inputArguments);
+        await hashHandler(firstArguments);
         break;
 
       case Commands.compress:
       case Commands.decompress:
-        await zipHandler(inputCommand, inputArguments);
+        await zipHandler(inputCommand, firstArguments, secondArguments);
         break;
 
       default:

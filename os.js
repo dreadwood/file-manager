@@ -2,12 +2,12 @@ import os from "node:os";
 import { Colors, colorStr } from './color.js';
 
 /**
- * @param {string[]} inputArguments
+ * @param {string[]} firstArguments
  */
-export const osHandler = (inputArguments) => {
+export const osHandler = (firstArguments) => {
   let output = null;
 
-  switch (inputArguments[0]) {
+  switch (firstArguments) {
     case '--EOL':
       output = JSON.stringify(os.EOL);
       break;

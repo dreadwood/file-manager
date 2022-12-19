@@ -5,9 +5,9 @@ import { Commands } from './constants.js';
 
 /**
  * @param {string} inputCommand
- * @param {string[]} inputArguments
+ * @param {string} firstArguments
  */
-export const nwdHandler = async (inputCommand, inputArguments) => {
+export const nwdHandler = async (inputCommand, firstArguments) => {
   switch (inputCommand) {
     case Commands.up: {
       process.chdir(path.dirname(process.cwd()));
@@ -15,7 +15,7 @@ export const nwdHandler = async (inputCommand, inputArguments) => {
     }
 
     case Commands.cd: {
-      const newWorkdir = path.join(process.cwd(), inputArguments.join(' ')); 
+      const newWorkdir = path.join(process.cwd(), firstArguments); 
       process.chdir(newWorkdir);
       break;
     }

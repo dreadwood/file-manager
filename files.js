@@ -29,12 +29,13 @@ const removeFile = async (inputPath) => {
 
 /**
  * @param {string} inputCommand
- * @param {string[]} inputArguments
+ * @param {string} firstArguments
+ * @param {string} secondArguments
  */
-export const filesHandler = async (inputCommand, inputArguments) => {
+export const filesHandler = async (inputCommand, firstArguments, secondArguments) => {
   switch (inputCommand) {
     case Commands.cat: {
-      const filePath = path.join(process.cwd(), inputArguments[0]); 
+      const filePath = path.join(process.cwd(), firstArguments); 
       const readStream = await fs.createReadStream(filePath);
       await readStream.pipe(process.stdout)
       await stream.finished(readStream);
@@ -42,36 +43,36 @@ export const filesHandler = async (inputCommand, inputArguments) => {
     }
 
     case Commands.add: {
-      const filePath = path.join(process.cwd(), inputArguments[0]); 
+      const filePath = path.join(process.cwd(), secondArguments); 
       await fsPromises.appendFile(filePath, '', { flag: 'ax' });
-      console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} is created`);
+      console.log(`File ${colorStr(firstArguments, Colors.fgBlue)} is created`);
       break;
     }
   
     case Commands.rn: {
-      const inputPath = path.join(process.cwd(), inputArguments[0]);
-      const outputPath = path.join(process.cwd(), inputArguments[1]);
+      const inputPath = path.join(process.cwd(), firstArguments);
+      const outputPath = path.join(process.cwd(), secondArguments);
       await fsPromises.rename(inputPath, outputPath);
-      console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} was renamed ${colorStr(inputArguments[1], Colors.fgBlue)}`);
+      console.log(`File ${colorStr(firstArguments, Colors.fgBlue)} was renamed ${colorStr(secondArguments, Colors.fgBlue)}`);
       break;
     }
   
     case Commands.cp: {
-      await copyFile(inputArguments[0], inputArguments[1]);
-      console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} was copied as ${colorStr(inputArguments[1], Colors.fgBlue)}`);
+      await copyFile(firstArguments, secondArguments);
+      console.log(`File ${colorStr(firstArguments, Colors.fgBlue)} was copied as ${colorStr(secondArguments, Colors.fgBlue)}`);
       break;
     }
   
     case Commands.mv: {
-      await copyFile(inputArguments[0], inputArguments[1]);
-      await removeFile(inputArguments[0]);
-      console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} was moved as ${colorStr(inputArguments[1], Colors.fgBlue)}`);
+      await copyFile(firstArguments, secondArguments);
+      await removeFile(firstArguments);
+      console.log(`File ${colorStr(firstArguments, Colors.fgBlue)} was moved as ${colorStr(secondArguments, Colors.fgBlue)}`);
       break;
     }
 
     case Commands.rm: {
-      await removeFile(inputArguments[0]);
-      console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} is deleted`);
+      await removeFile(firstArguments);
+      console.log(`File ${colorStr(firstArguments, Colors.fgBlue)} is deleted`);
       break;
     }
   }

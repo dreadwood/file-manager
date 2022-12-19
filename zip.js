@@ -7,11 +7,12 @@ import { Commands } from './constants.js';
 
 /**
  * @param {string} inputCommand
- * @param {string[]} inputArguments
+ * @param {string} firstArguments
+ * @param {string} secondArguments
  */
-export const zipHandler = async (inputCommand, inputArguments) => {
-  const inputPath = path.join(process.cwd(), inputArguments[0]);
-  const outputPath = path.join(process.cwd(), inputArguments[1]);
+export const zipHandler = async (inputCommand, firstArguments, secondArguments) => {
+  const inputPath = path.join(process.cwd(), firstArguments);
+  const outputPath = path.join(process.cwd(), secondArguments);
 
   switch (inputCommand) {
     case Commands.compress:
@@ -31,5 +32,5 @@ export const zipHandler = async (inputCommand, inputArguments) => {
       break;
   }
 
-  console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} ${inputCommand} to ${colorStr(inputArguments[1], Colors.fgBlue)}`);
+  console.log(`File ${colorStr(firstArguments, Colors.fgBlue)} ${inputCommand} to ${colorStr(secondArguments, Colors.fgBlue)}`);
 }
