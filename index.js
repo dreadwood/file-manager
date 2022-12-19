@@ -7,6 +7,7 @@ import { osHandler } from './os.js';
 import { nwdHandler } from './nwd.js';
 import { hashHandler } from './hash.js';
 import { zipHandler } from './zip.js';
+import { filesHandler } from './files.js';
 
 /**
  * @type {string[]}
@@ -36,6 +37,15 @@ process.stdin.on('data', async (data) => {
       case 'cd':
       case 'ls':
         await nwdHandler(inputCommand, inputArguments);
+        break;
+
+      case 'cat':
+      case 'add':
+      case 'rn':
+      case 'cp':
+      case 'mv':
+      case 'rm':
+        await filesHandler(inputCommand, inputArguments);
         break;
 
       case 'os':
