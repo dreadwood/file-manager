@@ -21,11 +21,22 @@ process.chdir(os.homedir());
 
 console.log(`Welcome to the File Manager${username ? `, ${colorStr(username, Colors.fgBlue)}` : ''}!`);
 console.log('Press command-D, control-D, ^-D, Ctrl-D to exit');
-process.stdout.write(`You are currently in ${colorStr(process.cwd(), Colors.fgBlue)} > `);
 
-process.stdin.on('data', async (data) => {
-  const input = data.toString().trim();
-  const [inputCommand, ...inputArguments] = input.split(' ');
+process.on('exit', () => {
+  console.log(`Thank you for using File Manager, ${username ? `${colorStr(username, Colors.fgBlue)}, ` : ''}goodbye!`);
+});
+
+process.on('SIGINT', process.exit);
+
+const rl = readline.createInterface({ 
+  input: process.stdin, 
+  output: process.stdout 
+});
+
+const readlineInput = async () => {
+  const input = await rl.question(`You are currently in ${colorStr(process.cwd(), Colors.fgBlue)} > `);
+
+  const [inputCommand, ...inputArguments] = input.trim().split(' ');
 
   try {
     
@@ -68,15 +79,10 @@ process.stdin.on('data', async (data) => {
 
   } catch (error) {
     console.log(error); // TODO: remove
-    console.log(colorStr(`Operation failed: ${input}`, Colors.fgRed));
+    console.log(colorStr('Operation failed', Colors.fgRed));
   }
 
-  process.stdout.write(`You are currently in ${colorStr(process.cwd(), Colors.fgBlue)} > `);
-});
+  readlineInput();
+}
 
-
-process.on('exit', () => {
-  console.log(`Thank you for using File Manager, ${username ? `${colorStr(username, Colors.fgBlue)}, ` : ''}goodbye!`);
-});
-
-process.on('SIGINT', process.exit);
+readlineInput();

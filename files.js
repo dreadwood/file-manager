@@ -43,7 +43,7 @@ export const filesHandler = async (inputCommand, inputArguments) => {
     case 'add': {
       const filePath = path.join(process.cwd(), inputArguments[0]); 
       await fsPromises.appendFile(filePath, '', { flag: 'ax' });
-      console.log(`File ${colorStr(inputArgumentsxt[0], Colors.fgBlue)} is created`);
+      console.log(`File ${colorStr(inputArguments[0], Colors.fgBlue)} is created`);
       break;
     }
   

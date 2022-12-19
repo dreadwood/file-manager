@@ -32,5 +32,5 @@ export const osHandler = (inputArguments) => {
       break;
   }
 
-  console.log(output || colorStr(`Invalid input: os ${inputArguments}`, Colors.fgRed));
+  console.log(output || colorStr('Invalid input', Colors.fgRed));
 };
