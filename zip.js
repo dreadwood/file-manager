@@ -4,6 +4,7 @@ import zlib from 'node:zlib';
 import stream from 'node:stream/promises';
 import { Colors, colorStr } from './color.js';
 import { Commands } from './constants.js';
+import { printInputError } from './errors.js';
 
 /**
  * @param {string} inputCommand
@@ -11,6 +12,11 @@ import { Commands } from './constants.js';
  * @param {string} secondArguments
  */
 export const zipHandler = async (inputCommand, firstArguments, secondArguments) => {
+  if (!firstArguments || !secondArguments) {
+    printInputError();
+    return;
+  }
+
   const inputPath = path.join(process.cwd(), firstArguments);
   const outputPath = path.join(process.cwd(), secondArguments);
 

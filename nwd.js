@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { Commands } from './constants.js';
+import { printInputError } from './errors.js';
 
 /**
  * @param {string} inputCommand
@@ -15,6 +16,11 @@ export const nwdHandler = async (inputCommand, firstArguments) => {
     }
 
     case Commands.cd: {
+      if (!firstArguments) {
+        printInputError();
+        return;
+      }
+
       const newWorkdir = path.join(process.cwd(), firstArguments); 
       process.chdir(newWorkdir);
       break;
